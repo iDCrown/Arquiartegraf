@@ -106,54 +106,54 @@ if (isset($_GET['cedula'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-  <ul class="nav nav-tabs" style=" padding: 1em; background: #fff4c1c2;">
+  <ul class="nav nav-tabs" style="padding: 1em;border-bottom: 2px solid #3b2983;background: #121652;">
     <li class="nav-item">
-      <a class="nav-link" style="border: none; color: #ffc108; font-variant-caps: all-petite-caps; font-weight: 900; letter-spacing: 1px;" aria-current="page"  href="#" onclick="mostrarTabla('clientes')">Clientes</a>
+      <a class="nav-link" style="border: none; color: #ffffff; font-variant-caps: all-petite-caps; font-weight: 900; letter-spacing: 1px;" aria-current="page"  href="#" onclick="mostrarTabla('clientes')">Clientes</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link"style="border: none; color: #ffc108; font-variant-caps: all-petite-caps; font-weight: 900; letter-spacing: 1px;" href="#" onclick="mostrarTabla('casos')">Historial de casos</a>
+      <a class="nav-link"style="border: none; color: #ffffff; font-variant-caps: all-petite-caps; font-weight: 900; letter-spacing: 1px;" href="#" onclick="mostrarTabla('tareas')">Historial de tareas</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link"style="border: none; color: #ffc108; font-variant-caps: all-petite-caps; font-weight: 900; letter-spacing: 1px;" href="#" onclick="mostrarTabla('abogado')">Abogados</a>
+      <a class="nav-link"style="border: none; color: #ffffff; font-variant-caps: all-petite-caps; font-weight: 900; letter-spacing: 1px;" href="#" onclick="mostrarTabla('empleado')">Empleados</a>
     </li>
   </ul>
-  <div class="conteiner">
+  <div class="conteiner elemento">
     <div class="content">
       <!-- Tabla de clientes -->
       <div id="clientes" style="display: block;">
         <!-- Boton Crear Cliente -->
         <div class="boton">
           <a href="crearCliente.php" class=""> 
-            <button type="button" class=" btn btn-outline-warning">Crear Cliente</button>
+            <button type="button" class=" btn" style="border: 2px solid #8004e3; color: #8004e3;">Crear Cliente</button>
           </a>
         </div>
-        <table class="table table-hover ">
-          <thead class="table-warning table-bordered border-warning">
+        <table class="table table-hover;" style="border: 6px solid #3b2983">
+          <thead class="table table-dark table-hover">
             <tr>
-              <th scope="col">Cedula</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Telefono</th>
-              <th scope="col">Direccion</th>
-              <th scope="col"></th>
+              <th scope="col" style="background: #6c3fc56b;">Cedula</th>
+              <th scope="col" style="background: #6c3fc56b;">Nombre</th>
+              <th scope="col" style="background: #6c3fc56b;">Correo</th>
+              <th scope="col" style="background: #6c3fc56b;">Telefono</th>
+              <th scope="col" style="background: #6c3fc56b;">Direccion</th>
+              <th scope="col" style="background: #6c3fc56b;"></th>
             </tr>
           </thead>
           <tbody>
           <?php while ( $fila = mysqli_fetch_assoc($clientes)) : ?>
             <tr class="tr-row" style="font-size: smaller">
-              <td scope="row">
-                <a href="casos.php?cedula=<?php echo $fila['cedula']; ?>">
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;">
+                <a style="color: #9d55c2;" href="casos.php?cedula=<?php echo $fila['cedula']; ?>">
                   <?php echo $fila['cedula']; ?>
                 </a>
               </td>
-              <td scope="row"><?php echo $fila['nombre']; ?></td>
-              <td scope="row"><?php echo $fila['email']; ?></td>
-              <td scope="row"><?php echo $fila['telefono']; ?></td>
-              <td scope="row"><?php echo $fila['direccion']; ?></td>
-              <td scope="row">
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['nombre']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['email']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['telefono']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['direccion']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;">
               <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="hidden" name="cedula" value="<?php echo $fila['cedula']; ?>">
-                <button type="submit" class="btn btn-warning w-100" name="borrar">Borrar</button>
+                <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrar">Borrar</button>
               </form>
             </tr> 
             <?php endwhile; ?>
@@ -161,41 +161,41 @@ if (isset($_GET['cedula'])) {
         </table>
       </div>
        <!-- Abogado -->
-       <div id="abogado"  style="display: none;">
+       <div id="empleado"  style="display: none;">
         <!-- Boton Crear  -->
         <div class="boton">
           <a href="abogado.php" class=""> 
-            <button type="button" class=" btn btn-outline-warning">Crear Abogado</button>
+            <button type="button" class=" btn" style="border: 2px solid #8004e3; color: #8004e3;">Crear Empleado</button>
           </a>
         </div>
           <!-- tabla Abogados -->
-        <table class="table table-hover ">
-          <thead class="table-warning table-bordered border-warning">
+        <table class="table table-hover " style="border: 6px solid #3b2983">
+          <thead class="table table-dark table-hover" >
             <tr>
-              <th scope="col">Cedula</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Telefono</th>
-              <th scope="col">Direccion</th>
-              <th scope="col">Salario</th>
-              <th scope="col"></th>
+              <th scope="col" style="background: #6c3fc56b;" >Cedula</th>
+              <th scope="col" style="background: #6c3fc56b;" >Nombre</th>
+              <th scope="col" style="background: #6c3fc56b;" >Correo</th>
+              <th scope="col" style="background: #6c3fc56b;" >Telefono</th>
+              <th scope="col" style="background: #6c3fc56b;" >Direccion</th>
+              <th scope="col" style="background: #6c3fc56b;" >Cargo</th>
+              <th scope="col" style="background: #6c3fc56b;" ></th>
             </tr>
           </thead>
           <tbody>
           <?php while ( $fila = mysqli_fetch_assoc($abogados)) : ?>
             <tr class="tr-row" style="font-size: smaller">
-              <td scope="row">
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;">
                 <?php echo $fila['idAbogado']; ?>
               </td>
-              <td scope="row"><?php echo $fila['nombre']; ?></td>
-              <td scope="row"><?php echo $fila['email']; ?></td>
-              <td scope="row"><?php echo $fila['telefono']; ?></td>
-              <td scope="row"><?php echo $fila['direccion']; ?></td>
-              <td scope="row"><?php echo $fila['salario']; ?></td>
-              <td scope="row">
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['nombre']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['email']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['telefono']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['direccion']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['cargo']; ?></td>
+              <td scope="row" style="color: white; background: bottom; padding: 1rem;">
               <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="hidden" name="idAbogado" value="<?php echo $fila['idAbogado']; ?>">
-                <button type="submit" class="btn btn-warning w-100" name="borrarAbogado">Borrar</button>
+                <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrarAbogado">Borrar</button>
               </form>
             </tr> 
             <?php endwhile; ?>
@@ -203,37 +203,41 @@ if (isset($_GET['cedula'])) {
         </table>
       </div>
       <!-- tabla casos -->
-      <div id="casos" style="display:none;">
+      <div id="tareas" style="display:none;">
           <form class="consultar" action="" method="GET">
-          <p  style="color:black" class="p_crear">Ingrese el ID del cliente</p>
+          <p  style="color:white" class="p_crear">Ingrese el ID del cliente</p>
             <input class="input" type="text" name="cedula">
-            <button type="submit" class="button" name="consultar">buscar</button>
+            <button type="submit" style="border: 2px solid #8004e3;color: #8004e3;background: transparent;" class="button" name="consultar">buscar</button>
           </form>
-          <table class="table table-hover ">
-            <thead class="table-warning table-bordered border-warning">
+          <table class="table table-hover"  style="border: 6px solid #3b2983">
+            <thead class="table table-dark table-hover" >
               <tr>
-                <th scope="col">Expediente</th>
-                <th scope="col">Fecha de inicio</th>
-                <th scope="col">TipoCaso</th>
-                <th scope="col">Estado</th>
-                <th scope="col"></th>
+                <th scope="col" style="background: #6c3fc56b;">Código</th>
+                <th scope="col" style="background: #6c3fc56b;">Empleado a cargo</th>
+                <th scope="col" style="background: #6c3fc56b;">Fecha de inicio</th>
+                <th scope="col" style="background: #6c3fc56b;">fecha de entrega</th>
+                <th scope="col" style="background: #6c3fc56b;">Plan</th>
+                <th scope="col" style="background: #6c3fc56b;">Estado</th>
+                <th scope="col" style="background: #6c3fc56b;"></th>
               </tr>
             </thead>
             <tbody>
             <?php if ($result): ?>
               <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                 <tr class="tr-row" style="font-size: smaller">
-                  <td scope="row"><?php echo $row['expediente']; ?></td>
-                    <td scope="row"><?php echo $row['fechaini']; ?></td>
-                    <td scope="row"><?php echo $row['tipoCaso']; ?></td>
-                    <td scope="row"><?php echo $row['estado']; ?></td>
-                    <td scope="row">
+                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['codigoTarea']; ?></td>
+                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['-']; ?></td>
+                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['fechaini']; ?></td>
+                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['fechafz']; ?></td>
+                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['planes']; ?></td>
+                    <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['estado']; ?></td>
+                    <td scope="row"  style="color: white; background: bottom; padding: 1rem;">
                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                       <div class="forml1">
-                        <button type="button" style="margin-right: 9px;" class="btnVer btn btn-warning w-100" data-expediente="<?php echo $row['expediente']; ?>" onclick="verCaso(this)" data-bs-toggle="modal" data-bs-target="#myModal">Ver</button>
+                        <button type="button" class="btn w-100" style="margin-right: 9px; background: #8d19c8; border: 2px; color: white;"  data-expediente="<?php echo $row['expediente']; ?>" onclick="verCaso(this)" data-bs-toggle="modal" data-bs-target="#myModal">Ver</button>
 
                         <input type="hidden" name="expediente" value="<?php echo $row['expediente']; ?>">
-                        <button type="submit" class="btn btn-warning w-100" name="borrarCaso">Borrar</button>
+                        <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrarCaso">Borrar</button>
                       </div>
                     </form>
                 </tr> 
@@ -253,7 +257,7 @@ if (isset($_GET['cedula'])) {
           <div class="modal-content">
             <div class="modalFactura-header">
               <div>
-                <p class="modalFactura-title" id="exampleModalLabel">Caso #<span id="expediente"></span></p>
+                <p class="modalFactura-title" id="exampleModalLabel">Tareas #<span id="expediente"></span></p>
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>  
@@ -353,7 +357,7 @@ if (isset($_GET['cedula'])) {
 
   <script>
     function mostrarTabla(tabla) {
-      const tablas = ['clientes', 'casos', 'abogado'];
+      const tablas = ['clientes', 'tareas', 'empleado'];
       tablas.forEach(t => {
         document.getElementById(t).style.display = (t === tabla) ? 'block' : 'none';
       });

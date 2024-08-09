@@ -36,7 +36,7 @@ include "./config/conexion.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abogados</title>
+    <title>Empleado</title>
     <link rel="stylesheet" href="index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
@@ -45,8 +45,8 @@ include "./config/conexion.php";
     <div class="content">
       <div style="display: flex; justify-content: center;">
         <div class="abogado"  style="">
-          <h2 class="h2_crear">Abogado</h2>
-          <p class="p_crear" >Ingrese la información del Abogado</p>
+          <h2 class="h2_crear">Empleado</h2>
+          <p class="p_crear" >Ingrese la información del Empleado</p>
           <div style="margin-top: 22px">  
           <form class="conteiner-form" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <div class="forml1">
@@ -73,8 +73,8 @@ include "./config/conexion.php";
                 <input type="text" class="for b3" name="direccion" id="exampleInputPassword1">
               </div>  
               <div class="first mb-3">
-                <label for="salario" class="form-label">salario</label>
-                <input type="text" class="for b3" name="salario" id="exampleInputPassword1">
+                <label for="cargo" class="form-label">Cargo</label>
+                <input type="text" class="for b3" name="cargo" id="exampleInputPassword1">
               </div>  
             </div>  
             <button type="submit" class="btn-brown" name="enviarAbogado">Enviar</button>

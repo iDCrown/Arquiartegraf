@@ -97,20 +97,20 @@
         </div>
       </div>
       <!-- caso -->
-      <div class="col background">
-        <h2 class="h2_crear">Caso</h2>
-        <p class="p_crear" >Ingrese la información del Caso</p>
+      <div class="col background elemento">
+        <h2 class="h2_crear">Tarea</h2>
+        <p class="p_crear" >Ingrese la información del proyecto que desea solicitar</p>
         <div style="margin-top: 22px">  
           <form class="conteiner-form" method="POST" action="<?php echo $_SERVER['PHP_SELF'] . '?cedula=' . $fila['cedula']; ?>">
 
             <div class="forml1">
               <div class="first mb-3">
-                <label for="expediente" class="form-label">Expediente</label>
-                <input type="number" class="for" name="expediente" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $expediente; ?>">
+                <label for="codigoTarea" class="form-label">Código</label>
+                <input type="number" class="for" name="codigoTarea" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $expediente; ?>">
               </div>
               <div class="first mb-3">
-                <label for="idAbogado" class="form-label">Abogado</label>
-                <input type="number" class="for" name="idAbogado" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $idAbogado; ?>">
+                <label for="idEmpleado" class="form-label">Empleado</label>
+                <input type="number" class="for" name="idEmpleado" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $idAbogado; ?>">
               </div>
             </div>
             <div class="forml1">
@@ -120,34 +120,35 @@
               </div>
               <div class="first mb-3">
                 
-                <label for="fechafz" class="form-label">Fecha de Finalización</label>
+                <label for="fechafz" class="form-label">Fecha de Entrega</label>
                 <input type="date" class=" for"  name="fechafz">
               </div>
             </div>
 
             <div class="forml1">
               <div class="first mb-3">
-              <label for="tipoCaso" class="form-label">Tipo del Caso</label>
-                <select class="form-select  for" name="tipoCaso" aria-label="Default select example">
-                  <option value="Legislativo">Legislativo</option>
-                  <option value="criminología">criminología</option>
-                  <option value="fiscal">fiscal</option>
+              <label for="planes" class="form-label">Tipo de Plan</label>
+                <select class="form-select for" name="planes" aria-label="Default select example">
+                <option value="Legislativo">Diseño - Plan Basico Identidad esencial</option>
+                  <option value="criminología">Diseño - Plan Premium Marca Completa </option>
+                  <option value="Legislativo">Arquitectura - Plan esencial</option>
+                  <option value="criminología">Arquitectura - Plan Integral </option>
               </select>
               </div>
 
               <div class="first mb-3">
-              <label for="estado" class="form-label">Estado del caso</label>
+              <label for="estado" class="form-label">Estado</label>
                 <select class="form-select  for" name="estado" aria-label="Default select example">
-                  <option value="Abierto">Abierto</option>
-                  <option value="Cerrado">Cerrado</option>
-                  <option value="Escalado">Escalado</option>
-                  <option value="Cancelado">Cancelado</option>
+                  <option value="Abierto">Creado</option>
+                  <option value="Cerrado">En progreso</option>
+                  <option value="Cancelado">En Pausa</option>
+                  <option value="Escalado">Finalizado</option>
               </select>
               </div>
             </div>
               <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Descripcion del caso</label>
-                <textarea class="form-control " name="descripcion" style="background: #fef0dc; margin-bottom: 2em;" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <label for="exampleFormControlTextarea1" class="form-label">Descripcion del Proyecto</label>
+                <textarea class="form-control " name="descripcion" style="background: #f1e1ff; margin-bottom: 2em;" id="exampleFormControlTextarea1" rows="3"></textarea>
               </div>
             <button type="submit" class="btn-brown warning" name="enviarCaso">Enviar</button>
           </form>
