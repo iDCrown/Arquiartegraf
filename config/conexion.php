@@ -1,7 +1,7 @@
 <?php 
 
     //Conectar a Mysql
-    $con = mysqli_connect("localhost", "root", "", "arquiartegrafstudio7");
+    $con = mysqli_connect("localhost", "root", "", "arquiartegrafstudio_7");
 
     //Probar conexión
     if(mysqli_connect_errno()){

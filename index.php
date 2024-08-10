@@ -1,5 +1,5 @@
-<?php include 'conexion.php'; ?>
-<?php include 'verCaso.php';?>
+<?php include './config/conexion.php'; ?>
+<?php include 'verTarea.php';?>
 <?php
     //Crear y seleccionar query de clientes
     $query = "SELECT * FROM clientes ORDER BY cedula DESC";
@@ -22,10 +22,10 @@
     }
 
 
-    if(isset($_POST['borrarCaso'])){        
-      $idRegistro = $_POST['expediente'];
+    if(isset($_POST['borrarTarea'])){        
+      $idRegistro = $_POST['codigoTarea'];
       //Validar si no están vacíos
-      $query = "DELETE FROM casos WHERE expediente= ?";
+      $query = "DELETE FROM tarea WHERE codigoTarea= ?";
 
       $stmt = $con->prepare($query);
       $stmt->bind_param("i", $idRegistro);
@@ -41,14 +41,14 @@
           exit();
         }
     }
-    // Abogados
-    $query = "SELECT * FROM abogado ORDER BY idAbogado DESC";
-    $abogados = mysqli_query($con, $query);
+    // Empleados
+    $query = "SELECT * FROM empleado ORDER BY idEmpleado DESC";
+    $empleados = mysqli_query($con, $query);
 
-    if(isset($_POST['borrarAbogado'])){        
-    $idRegistro = $_POST['idAbogado'];
+    if(isset($_POST['borrarEmpleado'])){        
+    $idRegistro = $_POST['idEmpleado'];
     //Validar si no están vacíos
-    $query = "DELETE FROM abogado WHERE idAbogado='$idRegistro'";
+    $query = "DELETE FROM empleado WHERE idEmpleado='$idRegistro'";
 
     if(!mysqli_query($con, $query)){
     
@@ -63,37 +63,40 @@
 
   
 
-  // HISTORIAL DE CASOS
- // Casos
+  // HISTORIAL DE TAREAS
+ // Tareas
 $result = null;
 
 if (isset($_GET['cedula'])) {
-    $idCedula = $_GET['cedula'];
+  $idCedula = $_GET['cedula'];
 
-    $query_historialCaso = "SELECT 
-    a.nombre AS nombreAbogado, 
-    cs.expediente, 
-    cs.fechaini, 
-    cs.tipoCaso, 
-    cs.estado 
-    FROM casos cs 
-    JOIN caso_abogado ca 
-    ON ca.expediente = cs.expediente 
-    JOIN abogado a 
-    ON ca.idAbogado = a.idAbogado 
-    JOIN clientes cl 
-    ON cs.cedula = cl.cedula 
-    WHERE cs.cedula = ?
-    GROUP BY cs.expediente, a.nombre, cs.tipoCaso, cs.estado ";
-    // Preparar la declaración
-    $stmt = $con->prepare($query_historialCaso);
-    // Vincular los parámetros
-    $stmt->bind_param('s', $idCedula); // 's' indica que el parámetro es de tipo string
-    // Ejecutar la declaración
-    $stmt->execute();
-    // Obtener los resultados
-    $result = $stmt->get_result();
+  $query_historialTarea = "SELECT 
+  e.nombre AS nombreEmpleado, 
+  t.codigoTarea, 
+  t.fechaini,
+  t.fechafz, 
+  t.planes, 
+  t.estado 
+  FROM tarea t 
+  JOIN tareas_empleados te 
+  ON te.codigoTarea = t.CodigoTarea 
+  JOIN empleado e 
+  ON te.idEmpleado = e.idEmpleado 
+  JOIN clientes cl 
+  ON t.cedula = cl.cedula 
+  WHERE t.cedula = ?
+  GROUP BY t.CodigoTarea, e.nombre, t.planes, t.estado";
+  
+  // Preparar la declaración
+  $stmt = $con->prepare($query_historialTarea);
+  // Vincular los parámetros
+  $stmt->bind_param('s', $idCedula); // 's' indica que el parámetro es de tipo string
+  // Ejecutar la declaración
+  $stmt->execute();
+  // Obtener los resultados
+  $result = $stmt->get_result();
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -142,7 +145,7 @@ if (isset($_GET['cedula'])) {
           <?php while ( $fila = mysqli_fetch_assoc($clientes)) : ?>
             <tr class="tr-row" style="font-size: smaller">
               <td scope="row" style="color: white; background: bottom; padding: 1rem;">
-                <a style="color: #9d55c2;" href="casos.php?cedula=<?php echo $fila['cedula']; ?>">
+                <a style="color: #9d55c2;" href="tareas.php?cedula=<?php echo $fila['cedula']; ?>">
                   <?php echo $fila['cedula']; ?>
                 </a>
               </td>
@@ -160,15 +163,15 @@ if (isset($_GET['cedula'])) {
           </tbody>
         </table>
       </div>
-       <!-- Abogado -->
+       <!-- Empleado -->
        <div id="empleado"  style="display: none;">
         <!-- Boton Crear  -->
         <div class="boton">
-          <a href="abogado.php" class=""> 
+          <a href="empleado.php" class=""> 
             <button type="button" class=" btn" style="border: 2px solid #8004e3; color: #8004e3;">Crear Empleado</button>
           </a>
         </div>
-          <!-- tabla Abogados -->
+          <!-- tabla Empleados -->
         <table class="table table-hover " style="border: 6px solid #3b2983">
           <thead class="table table-dark table-hover" >
             <tr>
@@ -182,10 +185,10 @@ if (isset($_GET['cedula'])) {
             </tr>
           </thead>
           <tbody>
-          <?php while ( $fila = mysqli_fetch_assoc($abogados)) : ?>
+          <?php while ( $fila = mysqli_fetch_assoc($empleados)) : ?>
             <tr class="tr-row" style="font-size: smaller">
               <td scope="row" style="color: white; background: bottom; padding: 1rem;">
-                <?php echo $fila['idAbogado']; ?>
+                <?php echo $fila['idEmpleado']; ?>
               </td>
               <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['nombre']; ?></td>
               <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['email']; ?></td>
@@ -194,15 +197,15 @@ if (isset($_GET['cedula'])) {
               <td scope="row" style="color: white; background: bottom; padding: 1rem;"><?php echo $fila['cargo']; ?></td>
               <td scope="row" style="color: white; background: bottom; padding: 1rem;">
               <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <input type="hidden" name="idAbogado" value="<?php echo $fila['idAbogado']; ?>">
-                <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrarAbogado">Borrar</button>
+                <input type="hidden" name="idEmpleado" value="<?php echo $fila['idEmpleado']; ?>">
+                <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrarEmpleado">Borrar</button>
               </form>
             </tr> 
             <?php endwhile; ?>
           </tbody>
         </table>
       </div>
-      <!-- tabla casos -->
+      <!-- tabla tareas -->
       <div id="tareas" style="display:none;">
           <form class="consultar" action="" method="GET">
           <p  style="color:white" class="p_crear">Ingrese el ID del cliente</p>
@@ -226,7 +229,7 @@ if (isset($_GET['cedula'])) {
               <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                 <tr class="tr-row" style="font-size: smaller">
                   <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['codigoTarea']; ?></td>
-                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['-']; ?></td>
+                  <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['nombreEmpleado']; ?></td>
                   <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['fechaini']; ?></td>
                   <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['fechafz']; ?></td>
                   <td scope="row"  style="color: white; background: bottom; padding: 1rem;"><?php echo $row['planes']; ?></td>
@@ -234,10 +237,10 @@ if (isset($_GET['cedula'])) {
                     <td scope="row"  style="color: white; background: bottom; padding: 1rem;">
                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                       <div class="forml1">
-                        <button type="button" class="btn w-100" style="margin-right: 9px; background: #8d19c8; border: 2px; color: white;"  data-expediente="<?php echo $row['expediente']; ?>" onclick="verCaso(this)" data-bs-toggle="modal" data-bs-target="#myModal">Ver</button>
+                        <button type="button" class="btn w-100" style="margin-right: 9px; background: #8d19c8; border: 2px; color: white;"  data-expediente="<?php echo $row['codigoTarea']; ?>" onclick="verTarea(this)" data-bs-toggle="modal" data-bs-target="#myModal">Ver</button>
 
-                        <input type="hidden" name="expediente" value="<?php echo $row['expediente']; ?>">
-                        <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrarCaso">Borrar</button>
+                        <input type="hidden" name="codigoTarea" value="<?php echo $row['codigoTarea']; ?>">
+                        <button type="submit" class="btn w-100" style="background: #8d19c8; border: 2px; color: white;" name="borrarTarea">Borrar</button>
                       </div>
                     </form>
                 </tr> 
@@ -251,109 +254,110 @@ if (isset($_GET['cedula'])) {
           </table>
         </div>          
      
-      <!-- Modal Abogado -->
+      <!-- Modal Tareas -->
       <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modalFactura-header">
-              <div>
-                <p class="modalFactura-title" id="exampleModalLabel">Tareas #<span id="expediente"></span></p>
-              </div>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>  
-            <div class="tableFactura-header">
-              <div class="infoMascota">
-                <h2 class="title_mascota" id="nombre"></h2>
-                <table class="data-table">
-                  <tr>
-                    <th>cedula:</th><td id="cedula"></td>
-                  </tr>
-                  <tr>
-                    <th>telefono:</th><td id="telefono"></td>
-                  </tr>
-                  <tr>
-                    <th>email:</th><td id="email"></td>
-                  </tr>
-                </table>
-              </div>
-              <div class="column_Nfactura">
-                <table class="data-table">
-                  <tr>
-                    <th class="facturaN">Fecha inicio:</th><td id="fechaini"></td>
-                  </tr>
-                  <tr>
-                    <th class="facturaN">Fecha final:</th><td id="fechafz"></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <div class="modal-body">
-            <table class="table table-sm caption-top ">
-              <h2 class="casoFactura-title">Informacion del caso</h2>
-              <thead>
-                <tr>
-                  <th scope="col">Expediente</th>
-                  <th scope="col">Tipo de Caso</th>
-                  <th scope="col">Nombre del Abogado</th>
-                  <th scope="col">Estado</th>
-                </tr>
-              </thead>
-              <tbody class="table-group-divider">
-                <td id="expediente_ex"></td>
-                <td id="tipoCaso"></td>
-                <td id="nombreAbogado"></td>
-                <td id="estado"></td>
-              </tbody>
-            </table>
-              <p  style="margin-top: 32px;"><strong>Descripcion del caso:</strong></p>
-              <p class="text_descripcion" id="descripcion">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, amet.</p>
-            </div>
-          </div>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modalFactura-header">
+        <div>
+          <p class="modalFactura-title" id="exampleModalLabel">Tarea #<span id="codigoTarea"></span></p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>  
+      <div class="tableFactura-header">
+        <div class="infoMascota">
+          <h2 class="title_mascota" id="nombre"></h2>
+          <table class="data-table">
+            <tr>
+              <th>Cédula:</th><td id="cedula"></td>
+            </tr>
+            <tr>
+              <th>Teléfono:</th><td id="telefono"></td>
+            </tr>
+            <tr>
+              <th>Email:</th><td id="email"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="column_Nfactura">
+          <table class="data-table">
+            <tr>
+              <th class="facturaN">Fecha Inicio:</th><td id="fechaini"></td>
+            </tr>
+            <tr>
+              <th class="facturaN">Fecha Final:</th><td id="fechafz"></td>
+            </tr>
+          </table>
         </div>
       </div>
-    </div>  
+      <div class="modal-body">
+        <table class="table table-sm caption-top">
+          <h2 class="casoFactura-title">Información del Proyecto</h2>
+          <thead>
+            <tr>
+              <th scope="col">Tarea</th>
+              <th scope="col">Planes</th>
+              <th scope="col">Empleado Asignado</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr>
+              <td id="codigoTarea_ct"></td>
+              <td id="planes"></td>
+              <td id="nombreEmpleado"></td>
+              <td id="estado"></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 32px;"><strong>Descripción de la Tarea:</strong></p>
+        <p class="text_descripcion" id="descripcion">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, amet.</p>
+      </div>
+    </div>
   </div>
+</div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   <script>
-    function verCaso(button) {
-      const expediente = button.getAttribute('data-expediente');
+  function verTarea(button) {
+    const codigoTarea = button.getAttribute('data-expediente');
 
-      // Realizar una solicitud AJAX a verCasos.php
-      fetch('verCaso.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'expediente_ex=' + expediente
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          alert(data.error);
-        } else {
-          // Poblar el modal con los datos recibidos
-          document.getElementById('expediente').innerText = data.expediente;
-          document.getElementById('expediente_ex').innerText = data.expediente;
-          document.getElementById('tipoCaso').innerText = data.tipoCaso;
-          document.getElementById('fechaini').innerText = data.fechaini;
-          document.getElementById('fechafz').innerText = data.fechafz;
-          document.getElementById('nombre').innerText = data.nombre;
-          document.getElementById('nombreAbogado').innerText = data.nombreAbogado;
-          document.getElementById('email').innerText = data.email;
-          document.getElementById('telefono').innerText = data.telefono;
-          document.getElementById('estado').innerText = data.estado;
-          document.getElementById('descripcion').innerText = data.descripcion;
-          document.getElementById('cedula').innerText = data.cedula;
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    }
-  </script>
+    // Realizar una solicitud AJAX a verTarea.php
+    fetch('verTarea.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'codigoTarea_ct=' + codigoTarea
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        // Poblar el modal con los datos recibidos
+        document.getElementById('codigoTarea').innerText = data.codigoTarea;
+        document.getElementById('codigoTarea_ct').innerText = data.codigoTarea;
+        document.getElementById('nombre').innerText = data.nombre; // Nombre del cliente
+        document.getElementById('cedula').innerText = data.cedula; 
+        document.getElementById('telefono').innerText = data.telefono;
+        document.getElementById('email').innerText = data.email;
+        document.getElementById('fechaini').innerText = data.fechaini;
+        document.getElementById('fechafz').innerText = data.fechafz;
+        document.getElementById('planes').innerText = data.planes;
+        document.getElementById('nombreEmpleado').innerText = data.nombreEmpleado; // Nombre del empleado
+        document.getElementById('estado').innerText = data.estado;
+        document.getElementById('descripcion').innerText = data.descripcion;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+</script>
 
   <script>
     function mostrarTabla(tabla) {
