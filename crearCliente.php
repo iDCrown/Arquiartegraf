@@ -1,6 +1,6 @@
 <?php
     //Incluimos conexión
-    include 'conexion.php';
+    include './config/conexion.php';
 
     if(isset($_POST['enviar'])){
         $cedula = mysqli_real_escape_string($con, $_POST['cedula']);

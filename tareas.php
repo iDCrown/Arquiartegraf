@@ -1,4 +1,4 @@
-<?php include "casosCon.php";?>
+<?php include "tareasCon.php";?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,7 +96,7 @@
           </div>
         </div>
       </div>
-      <!-- caso -->
+      <!-- Tarea -->
       <div class="col background elemento">
         <h2 class="h2_crear">Tarea</h2>
         <p class="p_crear" >Ingrese la información del proyecto que desea solicitar</p>
@@ -106,11 +106,11 @@
             <div class="forml1">
               <div class="first mb-3">
                 <label for="codigoTarea" class="form-label">Código</label>
-                <input type="number" class="for" name="codigoTarea" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $expediente; ?>">
+                <input type="number" class="for" name="codigoTarea" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $codigoTarea; ?>" readonly>
               </div>
               <div class="first mb-3">
                 <label for="idEmpleado" class="form-label">Empleado</label>
-                <input type="number" class="for" name="idEmpleado" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $idAbogado; ?>">
+                <input type="number" class="for" name="idEmpleado" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $idEmpleado; ?>">
               </div>
             </div>
             <div class="forml1">
@@ -129,20 +129,20 @@
               <div class="first mb-3">
               <label for="planes" class="form-label">Tipo de Plan</label>
                 <select class="form-select for" name="planes" aria-label="Default select example">
-                <option value="Legislativo">Diseño - Plan Basico Identidad esencial</option>
-                  <option value="criminología">Diseño - Plan Premium Marca Completa </option>
-                  <option value="Legislativo">Arquitectura - Plan esencial</option>
-                  <option value="criminología">Arquitectura - Plan Integral </option>
+                <option value="Diseño-Plan Basico">Diseño - Plan Basico Identidad esencial</option>
+                  <option value="Diseño-Plan Premium ">Diseño - Plan Premium Marca Completa </option>
+                  <option value="Arquitectura-Plan esencial">Arquitectura - Plan esencial</option>
+                  <option value="Arquitectura-Plan Integral">Arquitectura - Plan Integral </option>
               </select>
               </div>
 
               <div class="first mb-3">
               <label for="estado" class="form-label">Estado</label>
                 <select class="form-select  for" name="estado" aria-label="Default select example">
-                  <option value="Abierto">Creado</option>
-                  <option value="Cerrado">En progreso</option>
-                  <option value="Cancelado">En Pausa</option>
-                  <option value="Escalado">Finalizado</option>
+                  <option value="creado">Creado</option>
+                  <option value="en progreso">En progreso</option>
+                  <option value="en pausa">En Pausa</option>
+                  <option value="finalizado">Finalizado</option>
               </select>
               </div>
             </div>
@@ -150,7 +150,7 @@
                 <label for="exampleFormControlTextarea1" class="form-label">Descripcion del Proyecto</label>
                 <textarea class="form-control " name="descripcion" style="background: #f1e1ff; margin-bottom: 2em;" id="exampleFormControlTextarea1" rows="3"></textarea>
               </div>
-            <button type="submit" class="btn-brown warning" name="enviarCaso">Enviar</button>
+            <button type="submit" class="btn-brown warning" name="enviarTarea">Enviar</button>
           </form>
         </div>
       </div>

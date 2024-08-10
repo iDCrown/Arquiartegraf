@@ -66,12 +66,11 @@ caption {
   padding: 2em 1em;
 }
 .abogado{
-    display: flex;
-    flex-direction: column;
-    width: 60%;
-    padding: 5em 4em 4em;
-    box-shadow: 0px 0px 14px 4px rgb(218 146 2 / 28%);
-    margin: -8em 0;
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  padding: 5em 4em 4em;
+  box-shadow: 0px 0px 14px 4px rgb(218 2 179 / 28%);
 }
 
 .forml1{

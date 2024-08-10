@@ -1,13 +1,13 @@
 <?php
 include "./config/conexion.php";
-// ABOGADOS
-    if(isset($_POST['enviarAbogado'])){
-    $idAbogado = mysqli_real_escape_string($con, $_POST['idAbogado']);
+// EMPLEADOS
+    if(isset($_POST['enviarEmpleado'])){
+    $idEmpleado = mysqli_real_escape_string($con, $_POST['idEmpleado']);
     $nombre = mysqli_real_escape_string($con, $_POST['nombre']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $telefono = mysqli_real_escape_string($con, $_POST['telefono']);
     $direccion = mysqli_real_escape_string($con, $_POST['direccion']);
-    $salario = mysqli_real_escape_string($con, $_POST['salario']);
+    $cargo = mysqli_real_escape_string($con, $_POST['cargo']);
  
 
 
@@ -16,20 +16,20 @@ include "./config/conexion.php";
     $time = date('h:i:s a', time());
 
       //Validar si no están vacíos
-    if(!isset($idAbogado) || $idAbogado == '' || !isset($nombre) || $nombre == '' || !isset($telefono) || $telefono == '' || !isset($email) || $email == '' || !isset($direccion) || $direccion == '' || !isset($salario) || $salario == ''){
+    if(!isset($idEmpleado) || $idEmpleado == '' || !isset($nombre) || $nombre == '' || !isset($telefono) || $telefono == '' || !isset($email) || $email == '' || !isset($direccion) || $direccion == '' || !isset($cargo) || $cargo == ''){
         $error = "Algunos campos están vacíos";
     }else{
-        $query = "INSERT INTO abogado(idAbogado, nombre, email, telefono, direccion,salario)VALUES('$idAbogado', '$nombre', '$email', '$telefono', '$direccion', ' $salario')";
+        $query = "INSERT INTO empleado(idEmpleado, nombre, email, telefono, direccion,cargo)VALUES('$idEmpleado', '$nombre', '$email', '$telefono', '$direccion', ' $cargo')";
 
         if(!mysqli_query($con, $query)){
-            die('Error: ' . mysqli_error($con));
-            $error = "Error, no se pudo crear el registro";
-        }else{
-            $mensaje = "Registro creado correctamente";
-            header('Location: index.php?mensaje='.urlencode($mensaje));
-            exit();
-        }
-    }
+          die('Error: ' . mysqli_error($con));
+          $error = "Error, no se pudo crear el registro";
+      }else{
+          $mensaje = "Registro creado correctamente";
+          header('Location: index.php?mensaje='.urlencode($mensaje));
+          exit();
+      }
+  }
 }?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +37,7 @@ include "./config/conexion.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./css/crear.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
@@ -51,8 +51,8 @@ include "./config/conexion.php";
           <form class="conteiner-form" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <div class="forml1">
               <div class="first mb-3">
-                <label for="cedula" class="form-label">Cedula</label>
-                <input type="number" class="for  b1" name="idAbogado" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="idEmpleado" class="form-label">Cedula</label>
+                <input type="number" class="for  b1" name="idEmpleado" id="exampleInputEmail1" aria-describedby="emailHelp">
               </div>
               <div class="first mb-3">
                 <label for="nombre" class="form-label">Nombre Completo</label>
@@ -77,7 +77,7 @@ include "./config/conexion.php";
                 <input type="text" class="for b3" name="cargo" id="exampleInputPassword1">
               </div>  
             </div>  
-            <button type="submit" class="btn-brown" name="enviarAbogado">Enviar</button>
+            <button type="submit" class="btn-brown" name="enviarEmpleado">Enviar</button>
           </form>
         </div>
       </div>

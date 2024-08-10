@@ -1,6 +1,6 @@
 <?php
   // Incluimos conexión
-    include 'conexion.php';
+    include './config/conexion.php';
 
   // Obtener el ID del cliente de la URL
     if (isset($_GET['cedula']) && !empty($_GET['cedula'])) {
@@ -9,8 +9,8 @@
     die("Error: Cedula parameter is missing in the URL.");
     }
 
-  // Generar un número de expediente aleatorio
-    $expediente = rand(1000, 9999);
+  // Generar un Código de tarea aleatorio
+    $codigoTarea = rand(1000, 9999);
 
   // Prepare and execute the query to fetch client data
   $query = "SELECT * FROM clientes WHERE cedula = ?";
@@ -59,37 +59,39 @@
     }
     }
 
-  // Verificar si se ha enviado el formulario de creación de caso
-    if (isset($_POST['enviarCaso'])) {
-    echo'cedula'. $idRegistro;
+  // Verificar si se ha enviado el formulario de creación de la tarea
+  if (isset($_POST['enviarTarea'])) {
+    echo 'cedula' . $idRegistro;
 
-    $expediente = mysqli_real_escape_string($con, $_POST['expediente']);
+    $codigoTarea = mysqli_real_escape_string($con, $_POST['codigoTarea']);
     $fechaini = mysqli_real_escape_string($con, $_POST['fechaini']);
     $fechafz = mysqli_real_escape_string($con, $_POST['fechafz']);
-    $tipoCaso = mysqli_real_escape_string($con, $_POST['tipoCaso']);
+    $planes = mysqli_real_escape_string($con, $_POST['planes']); // Renombrado de tipoCaso a planes
     $estado = mysqli_real_escape_string($con, $_POST['estado']);
     $descripcion = mysqli_real_escape_string($con, $_POST['descripcion']);
-    $idAbogado = mysqli_real_escape_string($con, $_POST['idAbogado']);
+    $idEmpleado = mysqli_real_escape_string($con, $_POST['idEmpleado']);
 
     // Validar si no están vacíos
-    if (!empty($expediente) && !empty($fechaini) && !empty($fechafz) && !empty($tipoCaso) && !empty($estado) && !empty($descripcion) ){
-        $query = "INSERT INTO casos(expediente, fechaini, fechafz, tipoCaso, estado, descripcion, cedula) VALUES (?, ?, ?, ?, ?, ?,?)";
+    if (!empty($codigoTarea) && !empty($fechaini) && !empty($fechafz) && !empty($planes) && !empty($estado) && !empty($descripcion)) {
+        // Insertar en la tabla tarea
+        $query = "INSERT INTO tarea(codigoTarea, fechaini, fechafz, planes, estado, descripcion, cedula) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $con->prepare($query);
-        $stmt->bind_param("isssssi", $expediente, $fechaini, $fechafz, $tipoCaso, $estado, $descripcion, $idRegistro);
+        $stmt->bind_param("isssssi", $codigoTarea, $fechaini, $fechafz, $planes, $estado, $descripcion, $idRegistro);
         $stmt->execute();
 
+        // Insertar en la tabla tareas_empleados
+        $query_tareas_empleados = "INSERT INTO tareas_empleados(codigoTarea, idEmpleado) VALUES (?, ?)";
+        $stmt_tareas_empleados = $con->prepare($query_tareas_empleados);
+        $stmt_tareas_empleados->bind_param("ii", $codigoTarea, $idEmpleado);
+        $stmt_tareas_empleados->execute();
 
-        $query_casos = "INSERT INTO caso_abogado(expediente, idAbogado) VALUES (?, ?)";
-        $stmt_casos = $con->prepare($query_casos);
-        $stmt_casos->bind_param("ii", $expediente, $idAbogado);
-        $stmt_casos->execute();
-
-        if($stmt_casos->error){
-        die('Error: ' . $stmt_casos->error);
+        if ($stmt_tareas_empleados->error) {
+            die('Error: ' . $stmt_tareas_empleados->error);
         }
-    } 
-    header('Location: index.php?mensaje='.urlencode("caso programado correctamente"));
-    exit();
     }
+
+    header('Location: index.php?mensaje=' . urlencode("Tarea programada correctamente"));
+    exit();
+}
 
 ?>
